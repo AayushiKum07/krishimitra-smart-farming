@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-7 animate-fade-in">
+                <h1 class="hero-title">{{ _t('hero_title') }}</h1>
+                <p class="hero-subtitle">{{ _t('hero_subtitle') }}</p>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('recommend') }}" class="btn btn-custom btn-lg"><i class="bi bi-magic"></i> {{ _t('crop_recommendation') }}</a>
+                    <a href="#features" class="btn btn-custom-outline btn-lg"><i class="bi bi-info-circle"></i> {{ _t('features') }}</a>
+                </div>
+            </div>
+            <div class="col-lg-5 mt-5 mt-lg-0">
+                <!-- Signature element: sample soil readout, echoes the confidence gauge on the results page -->
+                <div class="readout-card animate-fade-in">
+                    <div class="eyebrow mb-2">{{ _t('sample_soil_reading') }}</div>
+                    <h3 class="h5 mb-0">{{ _t('hero_sample_label') }}</h3>
+                    <div class="readout-grid">
+                        <div class="readout-item">
+                            <svg class="gauge-ring" viewBox="0 0 80 80" data-percent="78">
+                                <circle class="track" cx="40" cy="40" r="34"></circle>
+                                <circle class="arc" cx="40" cy="40" r="34"></circle>
+                            </svg>
+                            <div class="gauge-value">78</div>
+                            <div class="gauge-label">{{ _t('nitrogen_short') }}</div>
+                        </div>
+                        <div class="readout-item">
+                            <svg class="gauge-ring" viewBox="0 0 80 80" data-percent="54">
+                                <circle class="track" cx="40" cy="40" r="34"></circle>
+                                <circle class="arc" cx="40" cy="40" r="34"></circle>
+                            </svg>
+                            <div class="gauge-value">54</div>
+                            <div class="gauge-label">{{ _t('phosphorus_short') }}</div>
+                        </div>
+                        <div class="readout-item">
+                            <svg class="gauge-ring" viewBox="0 0 80 80" data-percent="68">
+                                <circle class="track" cx="40" cy="40" r="34"></circle>
+                                <circle class="arc" cx="40" cy="40" r="34"></circle>
+                            </svg>
+                            <div class="gauge-value">68</div>
+                            <div class="gauge-label">{{ _t('potassium_short') }}</div>
+                        </div>
+                        <div class="readout-item">
+                            <svg class="gauge-ring" viewBox="0 0 80 80" data-percent="91">
+                                <circle class="track" cx="40" cy="40" r="34"></circle>
+                                <circle class="arc" cx="40" cy="40" r="34"></circle>
+                            </svg>
+                            <div class="gauge-value">6.4</div>
+                            <div class="gauge-label">{{ _t('ph_short') }}</div>
+                        </div>
+                    </div>
+                    <hr class="bg-secondary my-3">
+                    <a href="{{ url_for('recommend') }}" class="btn btn-custom w-100"><i class="bi bi-magic"></i> {{ _t('get_recommendation') }}</a>
+                    <a href="{{ url_for('crop_library') }}" class="btn btn-custom-outline w-100 mt-2"><i class="bi bi-collection"></i> {{ _t('explore_crops') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 reveal" id="features">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge badge-success-custom badge-custom mb-2">{{ _t('capabilities') }}</span>
+            <h2 class="display-5 fw-bold">{{ _t('features') }}</h2>
+            <p class="text-muted max-width-600 mx-auto">{{ _t('features_subtitle') }}</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 glass-card p-4 border-0">
+                    <div class="fs-1 text-success mb-3"><i class="bi bi-cpu"></i></div>
+                    <h4>{{ _t('feature_ai_title') }}</h4>
+                    <p class="text-muted">{{ _t('feature_ai_desc') }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 glass-card p-4 border-0">
+                    <div class="fs-1 text-success mb-3"><i class="bi bi-clipboard2-pulse"></i></div>
+                    <h4>{{ _t('feature_soil_title') }}</h4>
+                    <p class="text-muted">{{ _t('feature_soil_desc') }}</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 glass-card p-4 border-0">
+                    <div class="fs-1 text-success mb-3"><i class="bi bi-eyedropper"></i></div>
+                    <h4>{{ _t('feature_fert_title') }}</h4>
+                    <p class="text-muted">{{ _t('feature_fert_desc') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-5 bg-white border-top border-bottom reveal">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=600" alt="Modern Agriculture" class="img-fluid rounded-4 shadow-lg">
+            </div>
+            <div class="col-lg-6 ps-lg-5">
+                <span class="badge badge-success-custom badge-custom mb-2">{{ _t('about') }}</span>
+                <h2 class="display-6 fw-bold mb-4">{{ _t('about_title') }}</h2>
+                <p>{{ _t('about_desc') }}</p>
+                <div class="row g-3 mt-4">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-3 text-success me-3"><i class="bi bi-shield-check"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-0">{{ _t('reliable_predictions') }}</h6>
+                                <p class="text-muted mb-0 small">{{ _t('model_accuracy_stat') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-center">
+                            <div class="fs-3 text-success me-3"><i class="bi bi-clock-history"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-0">{{ _t('immediate_results') }}</h6>
+                                <p class="text-muted mb-0 small">{{ _t('instant_pdf_stat') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Support Section -->
+<section class="py-5 reveal" id="contact">
+    <div class="container">
+        <div class="glass-card p-5 max-width-800 mx-auto">
+            <div class="text-center mb-4">
+                <h2>{{ _t('contact') }}</h2>
+                <p class="text-muted">{{ _t('contact_subtitle') }}</p>
+            </div>
+            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('{{ _t('contact_sent_alert') }}');">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label-custom">{{ _t('form_name') }}</label>
+                        <input type="text" class="form-control form-control-custom" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label-custom">{{ _t('form_email') }}</label>
+                        <input type="email" class="form-control form-control-custom" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label-custom">{{ _t('form_subject') }}</label>
+                        <input type="text" class="form-control form-control-custom" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label-custom">{{ _t('form_message') }}</label>
+                        <textarea class="form-control form-control-custom" rows="4" required></textarea>
+                    </div>
+                    <div class="col-12 text-center mt-4">
+                        <button type="submit" class="btn btn-custom px-5">{{ _t('send_message') }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

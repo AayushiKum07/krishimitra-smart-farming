@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Top Result Banner -->
+    <div class="card glass-card p-4 mb-4 border-0 animate-fade-in">
+        <div class="row align-items-center g-4">
+            <div class="col-md-3 text-center border-end">
+                <div class="fs-1 text-success"><i class="bi bi-sprout-fill" style="font-size: 5rem;"></i></div>
+                <h3 class="h6 mt-3 text-uppercase text-muted">{{ _t('recommended_crop') }}</h3>
+                <h2 class="text-success fw-bold">{{ crop.crop_name }}</h2>
+            </div>
+
+            <div class="col-md-6 px-lg-4">
+                <h4 class="text-primary mb-2"><i class="bi bi-info-circle"></i> {{ _t('crop_profile') }}</h4>
+                <p class="text-muted">{{ crop.crop_description }}</p>
+                <div class="row g-2 pt-2 border-top">
+                    <div class="col-6">
+                        <small class="text-muted d-block">{{ _t('suitable_season') }}</small>
+                        <strong>{{ crop.season }}</strong>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted d-block">{{ _t('crop_duration') }}</small>
+                        <strong>{{ crop.crop_duration }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-center pt-3 pt-md-0">
+                <h3 class="h6 text-muted mb-2">{{ _t('confidence_score') }}</h3>
+                <div class="confidence-gauge" data-percent="{{ (rec.confidence_score * 100)|round(1) }}">
+                    <svg viewBox="0 0 150 150">
+                        <circle class="track" cx="75" cy="75" r="64" fill="none" stroke-width="10"></circle>
+                        <circle class="arc" cx="75" cy="75" r="64" fill="none" stroke-width="10"></circle>
+                    </svg>
+                    <div class="gauge-center">
+                        <span class="gauge-pct">{{ (rec.confidence_score * 100)|round(0)|int }}%</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('download_pdf') }}" class="btn btn-danger btn-sm w-100 mt-3"><i class="bi bi-file-earmark-pdf"></i> {{ _t('download_pdf') }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Top-3 Matches -->
+        <div class="col-lg-6 reveal">
+            <div class="card glass-card p-4 border-0 h-100">
+                <h4 class="card-title text-primary mb-1"><i class="bi bi-trophy"></i> {{ _t('top_matches') }}</h4>
+                <p class="text-muted small mb-4">{{ _t('top_matches_desc') }}</p>
+
+                {% for item in top_crops %}
+                    <div class="rank-row">
+                        <div class="rank-badge">{{ loop.index }}</div>
+                        <div class="rank-name">{{ item.crop_name }}</div>
+                        <div class="rank-bar-track">
+                            <div class="rank-bar-fill" style="width: 0%;" data-width="{{ (item.confidence * 100)|round(1) }}"></div>
+                        </div>
+                        <div class="rank-pct">{{ (item.confidence * 100)|round(1) }}%</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Why This Crop? (Feature Importance) -->
+        <div class="col-lg-6 reveal">
+            <div class="card glass-card p-4 border-0 h-100">
+                <h4 class="card-title text-primary mb-1"><i class="bi bi-lightbulb"></i> {{ _t('why_this_crop') }}</h4>
+                <p class="text-muted small mb-4">{{ _t('why_this_crop_desc') }}</p>
+
+                {% for factor in feature_importance %}
+                    <div class="importance-row">
+                        <div class="importance-label">
+                            <span>{{ factor.label }}</span>
+                            <span class="importance-value">{{ (factor.importance * 100)|round(1) }}%</span>
+                        </div>
+                        <div class="importance-bar-track">
+                            <div class="importance-bar-fill" style="width: 0%;" data-width="{{ (factor.importance * 100)|round(1) }}"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- NPK Analysis Chart -->
+        <div class="col-lg-6 reveal">
+            <div class="card glass-card p-4 border-0 h-100">
+                <h4 class="card-title text-primary"><i class="bi bi-bar-chart-line"></i> {{ _t('npk_comparison_heading') }}</h4>
+                <p class="text-muted small">{{ _t('npk_comparison_desc').replace('{crop}', crop.crop_name) }}</p>
+                <div style="height: 250px; position: relative;" class="mt-3">
+                    <canvas id="npkChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deficiencies & Fertilizer Recommendations -->
+        <div class="col-lg-6 reveal">
+            <div class="card glass-card p-4 border-0 h-100">
+                <h4 class="card-title text-primary"><i class="bi bi-shield-exclamation"></i> {{ _t('fertilizer_recommendation') }}</h4>
+                <p class="text-muted small">{{ _t('nutrient_deficiency') }}</p>
+
+                <div class="alert alert-info border-0 py-3 mb-4">
+                    <h6 class="alert-heading fw-bold mb-2"><i class="bi bi-exclamation-triangle-fill"></i> {{ _t('deficiency_analysis_heading') }}</h6>
+                    <ul class="mb-0 ps-3">
+                        {% for note in deficiencies %}
+                            <li class="small mb-1">{{ note }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {% if fertilizers %}
+                    <h5 class="h6 text-success fw-bold mb-3"><i class="bi bi-calendar-check"></i> {{ _t('application_guidelines_heading') }}</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped small align-middle">
+                            <thead class="table-success">
+                                <tr>
+                                    <th>{{ _t('fertilizer_name_col') }}</th>
+                                    <th>{{ _t('quantity_col') }}</th>
+                                    <th>{{ _t('schedule_col') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for fert in fertilizers %}
+                                    <tr>
+                                        <td><strong>{{ fert.fertilizer_name }}</strong></td>
+                                        <td>{{ fert.quantity }}</td>
+                                        <td>{{ fert.application_time }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted small">{{ _t('no_fertilizer_data') }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js Library -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let targetN = 80;
+        let targetP = 50;
+        let targetK = 40;
+
+        const cropName = "{{ crop.crop_name|lower }}";
+        if (cropName.includes("rice")) { targetN = 120; targetP = 60; targetK = 40; }
+        else if (cropName.includes("wheat")) { targetN = 120; targetP = 60; targetK = 40; }
+        else if (cropName.includes("maize")) { targetN = 100; targetP = 50; targetK = 50; }
+        else if (cropName.includes("cotton")) { targetN = 100; targetP = 50; targetK = 50; }
+        else if (cropName.includes("soybean")) { targetN = 30; targetP = 80; targetK = 40; }
+        else if (cropName.includes("pigeon") || cropName.includes("tur")) { targetN = 25; targetP = 50; targetK = 25; }
+        else if (cropName.includes("chickpea") || cropName.includes("gram")) { targetN = 20; targetP = 60; targetK = 20; }
+
+        renderNPKChart(
+            'npkChart',
+            {{ rec.nitrogen }},
+            {{ rec.phosphorus }},
+            {{ rec.potassium }},
+            targetN,
+            targetP,
+            targetK,
+            "{{ _t('chart_your_soil') }}",
+            "{{ _t('chart_optimal_target').replace('{crop}', crop.crop_name) }}"
+        );
+    });
+</script>
+{% endblock %}

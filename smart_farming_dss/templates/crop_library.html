@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="py-5 reveal">
+    <div class="container">
+        <div class="text-center mb-5">
+            <div class="eyebrow mb-2">{{ _t('crop_library_eyebrow') }}</div>
+            <h2 class="fw-bold">{{ _t('supported_crops_heading') }}</h2>
+            <p class="text-muted">{{ _t('crop_library_desc') }}</p>
+        </div>
+        <div class="row g-4">
+            {% for crop in crops %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="card glass-card h-100 border-0">
+                        <div class="crop-img-container">
+                            <i class="bi bi-flower1"></i>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h4 class="card-title h5 mb-0 text-primary">{{ crop.crop_name }}</h4>
+                                <span class="badge badge-success-custom badge-custom">{{ crop.season }}</span>
+                            </div>
+                            <p class="card-text text-muted small">{{ crop.crop_description }}</p>
+                            <div class="d-flex justify-content-between align-items-center border-top pt-2 mt-3">
+                                <span class="small text-muted"><strong>{{ _t('duration_label') }}</strong> {{ crop.crop_duration }}</span>
+                                <span class="small text-muted"><strong>{{ _t('soil_label') }}</strong> {{ crop.soil_type }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

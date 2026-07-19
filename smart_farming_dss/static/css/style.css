@@ -1,0 +1,403 @@
+/* ==========================================================================
+   KrishiMitra — Design tokens
+   Palette: canvas (cool sage-white), forest (primary), leaf (accent),
+            marigold (harvest gold — confidence/CTA), soil (earth brown), ink (text)
+   Type: Space Grotesk (display) / Inter (body) / IBM Plex Mono (data readouts)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+    --ink: #16241C;
+    --ink-soft: #4B5A50;
+    --canvas: #F5F7F1;
+    --surface: #FFFFFF;
+    --forest: #1F5D40;
+    --forest-dark: #163F2C;
+    --leaf: #4C9A6A;
+    --marigold: #E3A32B;
+    --marigold-dark: #C4881B;
+    --soil: #7A5230;
+    --line: rgba(22, 36, 28, 0.10);
+    --shadow-sm: 0 2px 10px rgba(22, 36, 28, 0.06);
+    --shadow-md: 0 10px 30px rgba(22, 36, 28, 0.09);
+    --shadow-lg: 0 20px 50px rgba(22, 36, 28, 0.14);
+    --radius: 16px;
+    --radius-sm: 10px;
+
+    /* legacy variable names kept so any stray old references still resolve */
+    --primary-color: var(--forest);
+    --primary-light: var(--leaf);
+    --accent-color: var(--leaf);
+    --bg-light: var(--canvas);
+    --dark-charcoal: var(--ink);
+    --danger-rose: #C0392B;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--canvas);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+}
+
+.text-primary { color: var(--forest) !important; }
+.text-success { color: var(--forest) !important; }
+.text-muted { color: var(--ink-soft) !important; }
+
+.eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--soil);
+}
+
+.mono, .data-figure {
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+a { color: var(--forest); text-decoration: none; }
+a:hover { color: var(--forest-dark); }
+
+/* ==========================================================================
+   Motion — respects prefers-reduced-motion
+   ========================================================================== */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+@keyframes drawArc {
+    from { stroke-dashoffset: var(--arc-full); }
+    to   { stroke-dashoffset: var(--arc-offset); }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.15s; }
+.stagger-3 { animation-delay: 0.25s; }
+.stagger-4 { animation-delay: 0.35s; }
+
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-in, .reveal { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ==========================================================================
+   Navbar
+   ========================================================================== */
+.navbar-custom {
+    background-color: rgba(245, 247, 241, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+    padding: 0.85rem 0;
+}
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--ink) !important;
+}
+.brand-mark {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+}
+.navbar-nav .nav-link {
+    color: var(--ink-soft) !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.9rem !important;
+    transition: color 0.2s ease;
+}
+.navbar-nav .nav-link:hover { color: var(--forest) !important; }
+.navbar-toggler { border: none; box-shadow: none !important; }
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn-custom {
+    background-color: var(--forest);
+    border: 1px solid var(--forest);
+    color: #fff !important;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.65rem 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+.btn-custom:hover {
+    background-color: var(--forest-dark);
+    border-color: var(--forest-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: #fff;
+}
+.btn-custom-outline {
+    background-color: transparent;
+    border: 1.5px solid var(--line);
+    color: var(--ink) !important;
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.65rem 1.5rem;
+    transition: all 0.2s ease;
+}
+.btn-custom-outline:hover {
+    border-color: var(--forest);
+    color: var(--forest) !important;
+    transform: translateY(-2px);
+}
+.btn-danger {
+    background-color: var(--marigold) !important;
+    border-color: var(--marigold) !important;
+    color: var(--ink) !important;
+    font-weight: 600;
+    border-radius: 999px;
+}
+.btn-danger:hover { background-color: var(--marigold-dark) !important; border-color: var(--marigold-dark) !important; }
+
+/* ==========================================================================
+   Badges
+   ========================================================================== */
+.badge-custom {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+}
+.badge-success-custom {
+    background-color: rgba(31, 93, 64, 0.10);
+    color: var(--forest);
+}
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero-section {
+    padding: 6.5rem 0 5rem;
+    position: relative;
+    overflow: hidden;
+}
+.hero-title {
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 1.08;
+    margin-bottom: 1.25rem;
+}
+.hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    max-width: 540px;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Signature element: soil readout gauge card */
+.readout-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 1.75rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.readout-card:hover { transform: translateY(-4px) rotate(-0.3deg); }
+.readout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.1rem;
+    margin-top: 1.25rem;
+}
+.readout-item { text-align: center; }
+.readout-item .gauge-ring { width: 74px; height: 74px; margin: 0 auto 0.5rem; transform: rotate(-90deg); }
+.readout-item .gauge-ring circle.track { stroke: var(--line); fill: none; stroke-width: 7; }
+.readout-item .gauge-ring circle.arc { stroke: var(--marigold); fill: none; stroke-width: 7; stroke-linecap: round; transition: stroke-dashoffset 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.readout-item .gauge-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    font-size: 0.95rem;
+    fill: var(--ink);
+}
+.readout-item .gauge-label {
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ==========================================================================
+   Cards (generic)
+   ========================================================================== */
+.glass-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: none;
+}
+.card.glass-card:hover { box-shadow: var(--shadow-md); }
+.card { transition: box-shadow 0.3s ease, transform 0.3s ease; border-radius: var(--radius); }
+
+.crop-img-container {
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.6rem;
+    color: var(--leaf);
+    background: linear-gradient(135deg, rgba(76,154,106,0.10), rgba(227,163,43,0.10));
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+.form-label-custom {
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.form-control-custom, .form-select.form-control-custom {
+    background-color: var(--canvas);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 0.65rem 0.9rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.form-control-custom:focus, .form-select.form-control-custom:focus {
+    border-color: var(--forest);
+    box-shadow: 0 0 0 3px rgba(31, 93, 64, 0.12);
+    background-color: var(--surface);
+}
+
+/* ==========================================================================
+   Confidence gauge (results page signature element)
+   ========================================================================== */
+.confidence-gauge { width: 150px; height: 150px; margin: 0 auto; position: relative; }
+.confidence-gauge svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.confidence-gauge circle.track { stroke: var(--line); }
+.confidence-gauge circle.arc {
+    stroke: var(--marigold);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.confidence-gauge .gauge-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+.confidence-gauge .gauge-pct {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--ink);
+}
+
+/* Top-3 ranked bars */
+.rank-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem; }
+.rank-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 0.8rem;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(31, 93, 64, 0.10);
+    color: var(--forest);
+    flex-shrink: 0;
+}
+.rank-row:first-child .rank-badge { background: var(--marigold); color: var(--ink); }
+.rank-bar-track { flex-grow: 1; height: 9px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.rank-bar-fill { height: 100%; border-radius: 999px; background: var(--forest); transition: width 1s cubic-bezier(0.16,1,0.3,1); }
+.rank-row:first-child .rank-bar-fill { background: var(--marigold); }
+.rank-name { min-width: 110px; font-weight: 600; font-size: 0.92rem; }
+.rank-pct { font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--ink-soft); min-width: 42px; text-align: right; }
+
+/* Feature importance bars */
+.importance-row { margin-bottom: 0.9rem; }
+.importance-row .importance-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; }
+.importance-row .importance-value { font-family: 'IBM Plex Mono', monospace; color: var(--soil); }
+.importance-bar-track { height: 8px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.importance-bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--soil), var(--leaf)); transition: width 1s cubic-bezier(0.16,1,0.3,1); }
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+.table-custom thead { background-color: rgba(31, 93, 64, 0.06); }
+.table-custom th { font-family: 'Space Grotesk', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--forest); border-bottom: none; }
+.table-bordered { border-color: var(--line) !important; }
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.footer-custom {
+    background-color: var(--forest-dark);
+    color: rgba(255,255,255,0.72);
+    padding: 3.5rem 0 2rem;
+    margin-top: 4rem;
+}
+.footer-custom h5 { color: #fff; }
+.footer-custom a { color: rgba(255,255,255,0.72); }
+.footer-custom a:hover { color: var(--marigold); }
+
+/* ==========================================================================
+   Language selector
+   ========================================================================== */
+.lang-dropdown .dropdown-menu {
+    max-height: 320px;
+    overflow-y: auto;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow-md);
+}
+.lang-dropdown .dropdown-item.active, .lang-dropdown .dropdown-item:active {
+    background-color: rgba(31, 93, 64, 0.10);
+    color: var(--forest);
+}
+
+.max-width-600 { max-width: 600px; }
+.max-width-800 { max-width: 800px; }
+
+/* Alerts */
+.alert-info { background-color: rgba(76,154,106,0.10); color: var(--forest-dark); border: 1px solid rgba(76,154,106,0.25); }
+.alert-danger { background-color: rgba(192,57,43,0.08); color: #8f2c21; border: 1px solid rgba(192,57,43,0.2); }
+.alert-success { background-color: rgba(227,163,43,0.12); color: #7a5f16; border: 1px solid rgba(227,163,43,0.3); }
